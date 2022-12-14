@@ -1,2 +1,78 @@
 # susurrus
-Whispering to myself.
+
+Helper package for using [Whisper](https://openai.com/blog/whisper) to process voice memos.
+It includes a few language model processing steps, and a script to run the whole thing.
+
+Also there is some documentation on how to start a google cloud instance with a GPU to run the `large` model.
+
+## Installation
+
+You probably want to use a virtual environment, with a version compatible with Whisper.
+
+See [Whisper Docs](https://github.com/openai/whisper#setup).
+
+```
+# First install Whisper, see above.
+git clone https://github.com/machinaut/susurrus
+pip install -e susurrus
+```
+
+## Usage
+
+```
+python -m susurrus.run \
+    --model base.en \
+    --audio_dir /path/to/audio \
+    --output_dir /path/to/output \
+    --extra_processing title,summary,action_items
+```
+
+## Directory Layout
+
+```
+audio_dir/
+    file_1.mp3
+    file_2.mp3
+    ...
+
+output_dir/
+    file_1.json
+    file_2.json
+    ...
+```
+
+## User Warnings
+
+Generated action items might hallucinate things not in the transcript, or miss important things that are there.
+It would be nice to do something like generate many action item lists and combine them to get a better result.
+
+## Running on Google Cloud
+
+The `large` Whisper model gives the best results, but needs a GPU.
+
+
+
+
+
+## Thinking about the design
+
+* Runs locally with small models
+* Takes an input folder and output folders
+* Language model processing of transcripts
+  * Notes on the unreliability of these tools
+  * Titling
+  * Summarization
+  * Extracting key points
+  * Extracting todos/action items
+  * Picking good tags for notes
+  * Extracting good questions
+  * Transforming into socratic dialogue
+  * Examples on creating your own
+* Processing ends up in a JSON file
+  * Single file key-object list, keys are filenames, objects are all processed data
+  * Example of gathering up all of the action items into a single list
+* Include docs on launching google cloud instances
+* Extra google cloud features
+  * Upload audio files to storage bucket
+  * Save transcripts to storage bucket
+  * Auto-shutdown when processing is done
