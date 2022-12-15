@@ -45,7 +45,7 @@ gcloud compute instances start $SUSURRUS_INSTANCE
 # Sync audio to machine (however you want)
 rsync -ave ssh "$AUDIO_PATH/" $SUSURRUS_MACHINE:~/data/
 # On machine -- update susurrus package
-pip install --upgrade --force-reinstall git+https://github.com/machinaut/susurrus.git"
+pip install --upgrade --force-reinstall git+https://github.com/machinaut/susurrus.git
 # On machine -- run susurrus
 susurrus --model large --path ~/data --openai-key $OPENAI_API_KEY --shutdown
 ```
