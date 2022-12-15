@@ -41,7 +41,7 @@ I used the Deep Learning Debian 10 base image, and installed [whisper](https://g
 Copy the audio files to the remote machine:
 ```
 
-gcloud compute ssh "$SUSURRUS_INSTANCE" --command 'bash -c "/opt/conda/envs/whisper/bin/susurrus --model base --path ~/data --openai-key $OPENAI_KEY"'
+gcloud compute ssh "$SUSURRUS_INSTANCE" --command "/opt/conda/envs/whisper/bin/susurrus --model base --path ~/data --openai-key $OPENAI_API_KEY"
 
 
 gcloud compute instances start $SUSURRUS_INSTANCE && \
