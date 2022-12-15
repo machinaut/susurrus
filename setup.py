@@ -5,5 +5,5 @@ setup(
     name="susurrus",
     version="0.0.1",
     scripts=["scripts/susurrus"],
-    requires=["openai"],
+    install_requires=["openai"],
 )
