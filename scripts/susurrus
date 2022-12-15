@@ -72,14 +72,20 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, default="base.en", help="Whisper model")
     parser.add_argument("--path", type=str, required=True, help="Path to audio files")
     parser.add_argument("--extras", type=str, default="all", help="Extra processing")
-    parser.add_argument("--shutdown", action="store_true", help="Shutdown when done")
     parser.add_argument("--openai-key", type=str, default="", help="OpenAI API key")
+    parser.add_argument('--git-push', action='store_true', help='Push to git repo')
+    parser.add_argument("--shutdown", action="store_true", help="Shutdown when done")
     args = parser.parse_args()
 
     if args.openai_key:
         openai.api_key = args.openai_key
 
     main(args.model, args.path, args.extras)
+
+    if args.git_push:
+        os.system("git add .")
+        os.system("git commit -m 'Add new audio files'")
+        os.system("git push")
 
     if args.shutdown:
         os.system("sudo shutdown")
