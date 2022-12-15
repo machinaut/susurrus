@@ -43,7 +43,7 @@ Copy the audio files to the remote machine:
 gcloud compute instances start $SUSURRUS_INSTANCE && \
     sleep 30 && \
     rsync -ave ssh "$AUDIO_PATH/" $SUSURRUS_MACHINE:~/data/ && \
-    gcloud compute ssh "$SUSURRUS_INSTANCE" --command "/opt/conda/envs/whisper/bin/pip install --upgrade --no-deps --force-reinstall git+https://github.com/machinaut/susurrus.git" && \
+    gcloud compute ssh "$SUSURRUS_INSTANCE" --command "/opt/conda/envs/whisper/bin/pip install --upgrade --force-reinstall git+https://github.com/machinaut/susurrus.git" && \
     gcloud compute ssh "$SUSURRUS_INSTANCE" --command "/opt/conda/envs/whisper/bin/susurrus --model base --path ~/data"
     gcloud compute ssh "$SUSURRUS_INSTANCE" --command " && nohup /opt/conda/envs/whisper/bin/susurrus --model base --path ~/data --shutdown > ~/susurrus.log 2>&1 &"
 ```

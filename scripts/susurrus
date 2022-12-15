@@ -35,7 +35,7 @@ Action Items:
 def main(model_name, path, extras):
     """Get all of the audio .mp3 files and process one by one"""
     print("Loading model", model_name)
-    model = whisper.load(model_name)
+    model = whisper.load_model(model_name)
     print("Model loaded")
 
     if extras == "all":
