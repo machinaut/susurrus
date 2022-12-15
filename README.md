@@ -59,7 +59,7 @@ I also created a storage bucket to store the audio files and the transcripts.  U
 gsutil -m rsync -r /my/audio/files/ gs://my-bucket/voice-memos/
 ```
 
-I needed to create a storage account JSON key, and then upload it to the instance in order to access the bucket.
+I needed to create a storage account with read/write access and a [storage account JSON key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-gcloud), and then upload it to the instance in order to access the bucket.
 
 
 ## Thinking about the design
