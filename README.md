@@ -9,12 +9,11 @@ Also there is some documentation on how to start a google cloud instance with a 
 
 You probably want to use a virtual environment, with a version compatible with Whisper.
 
-See [Whisper Docs](https://github.com/openai/whisper#setup).
+See [Whisper Docs](https://github.com/openai/whisper#setup) for installing instructions.
 
 ```
-# First install Whisper, see above.
-git clone https://github.com/machinaut/susurrus
-pip install -e susurrus
+# First install Whisper
+pip install --upgrade --no-deps --force-reinstall git+https://github.com/machinaut/susurrus.git
 ```
 
 ## Usage
@@ -22,23 +21,8 @@ pip install -e susurrus
 ```
 python -m susurrus.run \
     --model base.en \
-    --audio_dir /path/to/audio \
-    --output_dir /path/to/output \
-    --extra_processing title,summary,action_items
-```
-
-## Directory Layout
-
-```
-audio_dir/
-    file_1.mp3
-    file_2.mp3
-    ...
-
-output_dir/
-    file_1.json
-    file_2.json
-    ...
+    --path /path/to/files \
+    --extras title,summary,action_items
 ```
 
 ## User Warnings
@@ -54,13 +38,13 @@ For now I have been using a google cloud instance with a GPU, specifically a `n1
 
 I used the Deep Learning Debian 10 base image, and installed [whisper](https://github.com/openai/whisper#setup) into a conda python 3.9 environment.
 
-I also created a storage bucket to store the audio files and the transcripts.  Upload files to the bucket:
+Copy the audio files to the remote machine:
 ```
-gsutil -m rsync -r /my/audio/files/ gs://my-bucket/voice-memos/
+gcloud compute instances start $SUSURRUS_INSTANCE && \
+    sleep 30 && \
+    rsync -ave ssh "$AUDIO_PATH/" $SUSURRUS_MACHINE:~/data/ && \
+    gcloud compute ssh "$SUSURRUS_INSTANCE" --command "pip install --upgrade --no-deps --force-reinstall git+https://github.com/machinaut/susurrus.git && nohup python -m susurrus.run --model base --path ~/data --shutdown > ~/susurrus.log 2>&1 &"
 ```
-
-I needed to create a storage account with read/write access and a [storage account JSON key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-gcloud), and then upload it to the instance in order to access the bucket.
-
 
 ## Thinking about the design
 
