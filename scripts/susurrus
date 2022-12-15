@@ -54,10 +54,13 @@ def main(model_name, path, extras):
             assert extra in prompt_templates, f"Unknown extra: {extra}"
             if extra not in results:
                 prompt = prompt_templates[extra].format(text=results["text"])
-                completion = openai.Completion.create(
-                    engine="text-davinci-003", prompt=prompt, max_tokens=256
-                )
-                results[extra] = completion.choices[0].text
+                try:
+                    completion = openai.Completion.create(
+                        engine="text-davinci-003", prompt=prompt, max_tokens=256
+                    )
+                    results[extra] = completion.choices[0].text
+                except openai.error.InvalidRequestError:
+                    continue
         # Save results
         with open(output_file, "w") as f:
             json.dump(results, f)
@@ -70,7 +73,7 @@ if __name__ == "__main__":
     parser.add_argument("--path", type=str, required=True, help="Path to audio files")
     parser.add_argument("--extras", type=str, default="all", help="Extra processing")
     parser.add_argument("--shutdown", action="store_true", help="Shutdown when done")
-    parser.add_argument('--openai-key', type=str, default='', help='OpenAI API key')
+    parser.add_argument("--openai-key", type=str, default="", help="OpenAI API key")
     args = parser.parse_args()
 
     if args.openai_key:
