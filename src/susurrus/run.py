@@ -108,7 +108,6 @@ def main(model_name, audio_dir, output_dir, extra_processing=''):
             # Otherwise, transcribe the audio file
             print('Transcribing', audio_file)
             result = model.transcribe(audio_file)
-            # result = huggingface_api(audio_file)
             # Save the result to the output file
             with open(output_file, 'w') as f:
                 json.dump(result, f)

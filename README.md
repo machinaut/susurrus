@@ -50,8 +50,16 @@ It would be nice to do something like generate many action item lists and combin
 
 The `large` Whisper model gives the best results, but needs a GPU.
 
+For now I have been using a google cloud instance with a GPU, specifically a `n1-standard-8` with a `nvidia-tesla-p100` GPU.
 
+I used the Deep Learning Debian 10 base image, and installed [whisper](https://github.com/openai/whisper#setup) into a conda python 3.9 environment.
 
+I also created a storage bucket to store the audio files and the transcripts.  Upload files to the bucket:
+```
+gsutil -m rsync -r /my/audio/files/ gs://my-bucket/voice-memos/
+```
+
+I needed to create a storage account JSON key, and then upload it to the instance in order to access the bucket.
 
 
 ## Thinking about the design
