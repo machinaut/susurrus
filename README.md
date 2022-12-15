@@ -36,36 +36,16 @@ The `large` Whisper model gives the best results, but needs a GPU.
 
 For now I have been using a google cloud instance with a GPU, specifically a `n1-standard-8` with a `nvidia-tesla-p100` GPU.
 
-I used the Deep Learning Debian 10 base image, and installed [whisper](https://github.com/openai/whisper#setup) into a conda python 3.9 environment.
+I used the Deep Learning Debian 10 base image, and installed [whisper](https://github.com/openai/whisper#setup) into a conda python 3.9 environment, and made sure that environment was activated when running susurrus.
 
 Copy the audio files to the remote machine and update and run the susurrus package:
 ```
-gcloud compute instances start $SUSURRUS_INSTANCE && \
-    sleep 30 && \
-    rsync -ave ssh "$AUDIO_PATH/" $SUSURRUS_MACHINE:~/data/ && \
-    gcloud compute ssh "$SUSURRUS_INSTANCE" --command "/opt/conda/envs/whisper/bin/pip install --upgrade --force-reinstall git+https://github.com/machinaut/susurrus.git" && \
-    gcloud compute ssh "$SUSURRUS_INSTANCE" --command "nohup /opt/conda/envs/whisper/bin/susurrus --model base --path ~/data --openai-key $OPENAI_API_KEY --shutdown > ~/susurrus.log 2>&1 &"
+# Start machine
+gcloud compute instances start $SUSURRUS_INSTANCE
+# Sync audio to machine (however you want)
+rsync -ave ssh "$AUDIO_PATH/" $SUSURRUS_MACHINE:~/data/
+# On machine -- update susurrus package
+pip install --upgrade --force-reinstall git+https://github.com/machinaut/susurrus.git"
+# On machine -- run susurrus
+susurrus --model large --path ~/data --openai-key $OPENAI_API_KEY --shutdown
 ```
-
-## Thinking about the design
-
-* Runs locally with small models
-* Takes an input folder and output folders
-* Language model processing of transcripts
-  * Notes on the unreliability of these tools
-  * Titling
-  * Summarization
-  * Extracting key points
-  * Extracting todos/action items
-  * Picking good tags for notes
-  * Extracting good questions
-  * Transforming into socratic dialogue
-  * Examples on creating your own
-* Processing ends up in a JSON file
-  * Single file key-object list, keys are filenames, objects are all processed data
-  * Example of gathering up all of the action items into a single list
-* Include docs on launching google cloud instances
-* Extra google cloud features
-  * Upload audio files to storage bucket
-  * Save transcripts to storage bucket
-  * Auto-shutdown when processing is done
