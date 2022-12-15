@@ -83,6 +83,8 @@ if __name__ == "__main__":
     main(args.model, args.path, args.extras)
 
     if args.git_push:
+        # Needs to run from the path
+        os.chdir(args.path)
         os.system("git add .")
         os.system("git commit -m 'Add new audio files'")
         os.system("git push")
