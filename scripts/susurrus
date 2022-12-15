@@ -70,8 +70,12 @@ if __name__ == "__main__":
     parser.add_argument("--path", type=str, required=True, help="Path to audio files")
     parser.add_argument("--extras", type=str, default="all", help="Extra processing")
     parser.add_argument("--shutdown", action="store_true", help="Shutdown when done")
+    parser.add_argument('--openai-key', type=str, default='', help='OpenAI API key')
     args = parser.parse_args()
     main(args.model, args.path, args.extras)
+
+    if args.openai_key:
+        openai.api_key = args.openai_key
 
     if args.shutdown:
         os.system("sudo shutdown")
