@@ -38,7 +38,7 @@ For now I have been using a google cloud instance with a GPU, specifically a `n1
 
 I used the Deep Learning Debian 10 base image, and installed [whisper](https://github.com/openai/whisper#setup) into a conda python 3.9 environment.
 
-Copy the audio files to the remote machine:
+Copy the audio files to the remote machine and update and run the susurrus package:
 ```
 gcloud compute instances start $SUSURRUS_INSTANCE && \
     sleep 30 && \

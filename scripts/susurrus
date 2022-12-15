@@ -48,7 +48,7 @@ def main(model_name, path, extras):
         if os.path.exists(output_file):
             results = json.load(open(output_file))
         else:
-            results = model.transcribe(audio_file, verbose=True)
+            results = model.transcribe(audio_file, verbose=True, language='en')
         # Process extra steps with language model
         for extra in extras.split(","):
             assert extra in prompt_templates, f"Unknown extra: {extra}"
