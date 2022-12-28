@@ -43,10 +43,12 @@ Copy the audio files to the remote machine and update and run the susurrus packa
 # Start machine
 gcloud compute instances start $SUSURRUS_INSTANCE
 # Sync audio to machine (however you want)
+# To make this work: `gcloud compute config-ssh`
 rsync -ave ssh "$AUDIO_PATH/" $SUSURRUS_MACHINE:~/data/
 # On machine -- update susurrus package
 pip install --upgrade --force-reinstall git+https://github.com/machinaut/susurrus.git
 # On machine -- run susurrus
+# If you have a conda environment, don't forget to activate it
 susurrus --model large --path ~/data --openai-key $OPENAI_API_KEY --git-push --shutdown
 # Rsync only the generated json files back to local machine
 rsync -ave ssh "$SUSURRUS_MACHINE:~/data/*.json" "$VOICE_TRANSCRIPTS/"

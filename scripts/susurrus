@@ -40,6 +40,8 @@ def main(model_name, path, extras):
 
     if extras == "all":
         extras = ",".join(prompt_templates.keys())
+    elif extras == "none":
+        extras = ""
 
     for audio_file in glob.glob(os.path.join(path, "*.mp3")):
         output_file = audio_file.replace(".mp3", ".json")
