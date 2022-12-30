@@ -79,14 +79,21 @@ if __name__ == "__main__":
     parser.add_argument("--shutdown", action="store_true", help="Shutdown when done")
     args = parser.parse_args()
 
+    path = os.path.abspath(args.path)
+
     if args.openai_key:
         openai.api_key = args.openai_key
 
-    main(args.model, args.path, args.extras)
+    if args.git_push:
+        # Needs to run from the path
+        os.chdir(path)
+        os.system("git pull")
+
+    main(args.model, path, args.extras)
 
     if args.git_push:
         # Needs to run from the path
-        os.chdir(args.path)
+        os.chdir(path)
         os.system("git add .")
         os.system("git commit -m 'Add new audio files'")
         os.system("git push")
